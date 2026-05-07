@@ -10,3 +10,4 @@ obj/
 *.tmp
 *.log
 appsettings.Development.json
+DOCUMENTACION-TECNICA.md
