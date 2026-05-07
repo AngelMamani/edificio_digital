@@ -11,3 +11,4 @@ obj/
 *.log
 appsettings.Development.json
 DOCUMENTACION-TECNICA.md
+edificio_digital/appsettings.json
