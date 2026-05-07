@@ -1,0 +1,44 @@
+@using edificio_digital.Models.Common
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] · Admin · Edificio digital</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="layout-admin bg-light">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand fw-semibold" asp-page="@AppConstants.Pages.AdminHome">Panel · Admin</a>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" asp-page="@AppConstants.Pages.AdminHome">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-page="/Admin/Usuarios">Usuarios</a></li>
+                </ul>
+                <div class="d-flex align-items-center text-white-50 small">
+                    <span class="me-3">@User.Identity?.Name</span>
+                    <form method="post" asp-page="/Logout" class="m-0">
+                        <button type="submit" class="btn btn-outline-light btn-sm">Cerrar sesión</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container py-4">
+        <div class="alert alert-dark py-2 small mb-3">Layout administrador — solo rol <strong>admin</strong></div>
+        @RenderBody()
+    </main>
+
+    <footer class="border-top text-muted py-3">
+        <div class="container small">&copy; 2026 Edificio digital · Panel administrativo</div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,10 +1,34 @@
-﻿@page
+@page
 @model IndexModel
+@using edificio_digital.Models.Common
 @{
-    ViewData["Title"] = "Home page";
+    Layout = AppConstants.Layouts.Public;
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="text-center py-5">
+    <h1 class="display-5 fw-bold">Edificio digital</h1>
+    <p class="lead text-muted">Gestión de ambientes, recursos y reservas para tu institución.</p>
+    <a class="btn btn-primary btn-lg mt-3" asp-page="@AppConstants.Pages.Login">Iniciar sesión</a>
+</section>
+
+<section class="row g-3 mt-4">
+    <div class="col-md-4">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title">Ambientes</h5>
+            <p class="card-text small text-muted">Catálogo público de espacios disponibles.</p>
+        </div></div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title">Recursos</h5>
+            <p class="card-text small text-muted">Equipos asociados a cada ambiente.</p>
+        </div></div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title">Reservas</h5>
+            <p class="card-text small text-muted">Inicia sesión para reservar.</p>
+        </div></div>
+    </div>
+</section>

@@ -12,8 +12,8 @@ using edificio_digital.Entity.Data;
 namespace edificio_digital.Entity.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260507155000_AjusteEsquemasPorModulo")]
-    partial class AjusteEsquemasPorModulo
+    [Migration("20260507175727_InicialClean")]
+    partial class InicialClean
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,7 +38,8 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Codigo")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("codigo");
 
                     b.Property<Guid>("DependenciaId")
@@ -47,16 +48,19 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Estado")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("estado");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("nombre");
 
                     b.Property<string>("Observacion")
-                        .HasColumnType("text")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
                         .HasColumnName("observacion");
 
                     b.Property<Guid>("PisoId")
@@ -71,7 +75,8 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Tipo")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("tipo");
 
                     b.HasKey("Id");
@@ -93,7 +98,8 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Accion")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("accion");
 
                     b.Property<Guid?>("ActorUsuarioId")
@@ -101,11 +107,13 @@ namespace edificio_digital.Entity.Migrations
                         .HasColumnName("actor_usuario_id");
 
                     b.Property<string>("AgenteUsuario")
-                        .HasColumnType("text")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
                         .HasColumnName("agente_usuario");
 
                     b.Property<string>("DireccionIp")
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("direccion_ip");
 
                     b.Property<DateTime>("FechaHora")
@@ -114,20 +122,22 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("RegistroId")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("registro_id");
 
                     b.Property<string>("Tabla")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("tabla");
 
                     b.Property<string>("ValoresAnterioresJson")
-                        .HasColumnType("text")
+                        .HasColumnType("jsonb")
                         .HasColumnName("valores_anteriores_json");
 
                     b.Property<string>("ValoresNuevosJson")
-                        .HasColumnType("text")
+                        .HasColumnType("jsonb")
                         .HasColumnName("valores_nuevos_json");
 
                     b.HasKey("Id");
@@ -172,11 +182,13 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("MotivoBloqueo")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
                         .HasColumnName("motivo_bloqueo");
 
                     b.Property<string>("MotivoDesbloqueo")
-                        .HasColumnType("text")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
                         .HasColumnName("motivo_desbloqueo");
 
                     b.HasKey("Id");
@@ -205,12 +217,14 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Codigo")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("codigo");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("nombre");
 
                     b.Property<Guid>("SedeId")
@@ -219,7 +233,8 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Tipo")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("tipo");
 
                     b.HasKey("Id");
@@ -283,12 +298,14 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Codigo")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("codigo");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("nombre");
 
                     b.Property<Guid>("SedeId")
@@ -316,7 +333,8 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("CodigoPatrimonial")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("codigo_patrimonial");
 
                     b.Property<Guid>("DependenciaId")
@@ -325,21 +343,25 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Estado")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("estado");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("nombre");
 
                     b.Property<string>("Serie")
-                        .HasColumnType("text")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("serie");
 
                     b.Property<string>("Tipo")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("tipo");
 
                     b.HasKey("Id");
@@ -390,16 +412,19 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Accion")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("accion");
 
                     b.Property<string>("ClaveConfiguracion")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("clave_configuracion");
 
                     b.Property<string>("EjecutadoPor")
-                        .HasColumnType("text")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("ejecutado_por");
 
                     b.Property<DateTime>("FechaHora")
@@ -408,11 +433,13 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Modulo")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("modulo");
 
                     b.Property<string>("Observacion")
-                        .HasColumnType("text")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
                         .HasColumnName("observacion");
 
                     b.Property<string>("ValorAnterior")
@@ -436,11 +463,13 @@ namespace edificio_digital.Entity.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("AgenteUsuario")
-                        .HasColumnType("text")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
                         .HasColumnName("agente_usuario");
 
                     b.Property<string>("Causa")
-                        .HasColumnType("text")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
                         .HasColumnName("causa");
 
                     b.Property<string>("DetalleError")
@@ -448,7 +477,8 @@ namespace edificio_digital.Entity.Migrations
                         .HasColumnName("detalle_error");
 
                     b.Property<string>("DireccionIp")
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("direccion_ip");
 
                     b.Property<bool>("Exitoso")
@@ -461,7 +491,8 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("UsuarioIntentado")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
                         .HasColumnName("usuario_intentado");
 
                     b.HasKey("Id");
@@ -478,28 +509,33 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Accion")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("accion");
 
                     b.Property<string>("CreadoPor")
-                        .HasColumnType("text")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("creado_por");
 
                     b.Property<string>("DetalleJson")
-                        .HasColumnType("text")
+                        .HasColumnType("jsonb")
                         .HasColumnName("detalle_json");
 
                     b.Property<string>("EliminadoPor")
-                        .HasColumnType("text")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("eliminado_por");
 
                     b.Property<string>("Entidad")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("entidad");
 
                     b.Property<string>("EntidadId")
-                        .HasColumnType("text")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("entidad_id");
 
                     b.Property<DateTime>("FechaHora")
@@ -507,11 +543,13 @@ namespace edificio_digital.Entity.Migrations
                         .HasColumnName("fecha_hora");
 
                     b.Property<string>("ModificadoPor")
-                        .HasColumnType("text")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("modificado_por");
 
                     b.Property<string>("Motivo")
-                        .HasColumnType("text")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
                         .HasColumnName("motivo");
 
                     b.HasKey("Id");
@@ -536,17 +574,20 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("MotivoCambio")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
                         .HasColumnName("motivo_cambio");
 
                     b.Property<string>("TipoAnterior")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("tipo_anterior");
 
                     b.Property<string>("TipoNuevo")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("tipo_nuevo");
 
                     b.HasKey("Id");
@@ -576,7 +617,8 @@ namespace edificio_digital.Entity.Migrations
                         .HasColumnName("inicio");
 
                     b.Property<string>("Observacion")
-                        .HasColumnType("text")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
                         .HasColumnName("observacion");
 
                     b.Property<Guid?>("ReservaId")
@@ -585,7 +627,8 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("TipoUso")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("tipo_uso");
 
                     b.Property<Guid?>("UsuarioId")
@@ -627,7 +670,8 @@ namespace edificio_digital.Entity.Migrations
                         .HasColumnName("inicio");
 
                     b.Property<string>("Motivo")
-                        .HasColumnType("text")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
                         .HasColumnName("motivo");
 
                     b.Property<Guid?>("UsuarioId")
@@ -654,17 +698,20 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Accion")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("accion");
 
                     b.Property<string>("Codigo")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("codigo");
 
                     b.Property<string>("Recurso")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("recurso");
 
                     b.HasKey("Id");
@@ -693,7 +740,8 @@ namespace edificio_digital.Entity.Migrations
                         .HasColumnName("edificio_id");
 
                     b.Property<string>("Nombre")
-                        .HasColumnType("text")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("nombre");
 
                     b.Property<int>("Numero")
@@ -736,7 +784,8 @@ namespace edificio_digital.Entity.Migrations
                         .HasColumnName("rol_id");
 
                     b.Property<string>("TipoUsuario")
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("tipo_usuario");
 
                     b.HasKey("Id");
@@ -763,7 +812,8 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Estado")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("estado");
 
                     b.Property<DateOnly>("FechaFin")
@@ -784,7 +834,8 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Motivo")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
                         .HasColumnName("motivo");
 
                     b.Property<int>("PrioridadAplicada")
@@ -794,7 +845,8 @@ namespace edificio_digital.Entity.Migrations
                         .HasColumnName("prioridad_aplicada");
 
                     b.Property<string>("ReglaRecurrencia")
-                        .HasColumnType("text")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
                         .HasColumnName("regla_recurrencia");
 
                     b.Property<Guid>("SolicitanteId")
@@ -803,12 +855,14 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("TipoFranja")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("tipo_franja");
 
                     b.Property<string>("TipoReserva")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("tipo_reserva");
 
                     b.HasKey("Id");
@@ -831,7 +885,8 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Estado")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("estado");
 
                     b.Property<DateOnly>("Fecha")
@@ -897,16 +952,19 @@ namespace edificio_digital.Entity.Migrations
 
                     b.Property<string>("Codigo")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("codigo");
 
                     b.Property<string>("Direccion")
-                        .HasColumnType("text")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
                         .HasColumnName("direccion");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("nombre");
 
                     b.HasKey("Id");

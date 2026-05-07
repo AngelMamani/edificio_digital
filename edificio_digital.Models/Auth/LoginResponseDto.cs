@@ -4,8 +4,11 @@ public class LoginResponseDto
 {
     public bool IsSuccess { get; set; }
     public string Message { get; set; } = string.Empty;
+    public Guid? UserId { get; set; }
     public string? NombreCompleto { get; set; }
     public string? Email { get; set; }
     public string? Rol { get; set; }
+    public List<string> Roles { get; set; } = [];
+    public string? RedirectPage { get; set; }
     public string? Token { get; set; }
 }

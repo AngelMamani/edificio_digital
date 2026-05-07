@@ -1,6 +1,6 @@
-namespace edificio_digital.Entity.Auth;
+namespace edificio_digital.Models.Domain.Auth;
 
-public class UserCredentialEntity
+public class UserCredential
 {
     public Guid Id { get; set; }
     public string NombreUsuario { get; set; } = string.Empty;
@@ -9,4 +9,5 @@ public class UserCredentialEntity
     public string? TipoUsuario { get; set; }
     public bool Activo { get; set; } = true;
     public string Contrasena { get; set; } = string.Empty;
+    public List<string> Roles { get; set; } = [];
 }

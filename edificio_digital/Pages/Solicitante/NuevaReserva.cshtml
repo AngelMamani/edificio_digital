@@ -1,0 +1,26 @@
+@page
+@model edificio_digital.Pages.Solicitante.NuevaReservaModel
+@{
+    ViewData["Title"] = "Nueva reserva";
+}
+
+<h1 class="h3 mb-3">Nueva reserva</h1>
+<p class="text-muted small">Demo de página dentro del layout solicitante.</p>
+
+<form class="row g-3" method="post">
+    <div class="col-md-6">
+        <label class="form-label">Ambiente</label>
+        <select class="form-select" disabled><option>Seleccionar…</option></select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Fecha</label>
+        <input type="date" class="form-control" disabled />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Hora inicio</label>
+        <input type="time" class="form-control" disabled />
+    </div>
+    <div class="col-12">
+        <button type="button" class="btn btn-primary" disabled>Reservar (demo)</button>
+    </div>
+</form>
