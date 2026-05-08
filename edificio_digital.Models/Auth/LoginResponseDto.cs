@@ -9,6 +9,6 @@ public class LoginResponseDto
     public string? Email { get; set; }
     public string? Rol { get; set; }
     public List<string> Roles { get; set; } = [];
-    public string? RedirectPage { get; set; }
-    public string? Token { get; set; }
+    public string? AccessToken { get; set; }
+    public DateTime? AccessTokenExpiresAt { get; set; }
 }

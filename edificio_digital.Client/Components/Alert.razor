@@ -1,0 +1,25 @@
+@if (Visible)
+{
+    <div class="alert alert-@Variant @(Dismissible ? "alert-dismissible fade show" : null) py-2 small mb-3" role="alert">
+        @ChildContent
+        @if (Dismissible)
+        {
+            <button type="button" class="btn-close" aria-label="Cerrar" @onclick="Dismiss"></button>
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public string Variant { get; set; } = "secondary";
+    [Parameter] public bool Visible { get; set; } = true;
+    [Parameter] public bool Dismissible { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
+
+    private async Task Dismiss()
+    {
+        Visible = false;
+        if (VisibleChanged.HasDelegate)
+            await VisibleChanged.InvokeAsync(false);
+    }
+}

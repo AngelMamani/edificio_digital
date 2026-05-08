@@ -1,0 +1,197 @@
+/* =================================================================
+   Edificio Digital — design tokens sobre Bootstrap 5
+   Adaptado desde plantill/edificio_digital
+   ================================================================= */
+
+:root {
+  /* paleta lila institucional */
+  --ed-lila-50:  oklch(0.985 0.008 295);
+  --ed-lila-100: oklch(0.965 0.018 295);
+  --ed-lila-200: oklch(0.92  0.04  295);
+  --ed-lila-300: oklch(0.84  0.08  295);
+  --ed-lila-400: oklch(0.72  0.14  295);
+  --ed-lila-500: oklch(0.58  0.16  295);
+  --ed-lila-600: oklch(0.48  0.16  295);
+  --ed-lila-700: oklch(0.38  0.13  295);
+  --ed-lila-800: oklch(0.28  0.09  290);
+  --ed-lila-900: oklch(0.18  0.04  290);
+
+  --ed-cyan-300: oklch(0.86 0.10 220);
+  --ed-cyan-400: oklch(0.78 0.13 220);
+  --ed-cyan-500: oklch(0.68 0.15 220);
+
+  --ed-violet-400: oklch(0.66 0.18 305);
+  --ed-violet-500: oklch(0.55 0.20 305);
+
+  --ed-amber-400: oklch(0.82 0.13 80);
+  --ed-rose-400:  oklch(0.72 0.16 18);
+  --ed-green-400: oklch(0.78 0.14 155);
+
+  /* neutros con matiz frío */
+  --ed-paper:    oklch(0.992 0.004 290);
+  --ed-paper-2:  oklch(0.975 0.006 290);
+  --ed-paper-3:  oklch(0.955 0.010 290);
+  --ed-line:     oklch(0.92  0.012 290);
+  --ed-line-2:   oklch(0.86  0.018 290);
+  --ed-ink:      oklch(0.18  0.020 285);
+  --ed-ink-2:    oklch(0.32  0.018 285);
+  --ed-ink-muted:oklch(0.50  0.014 285);
+
+  /* sombras con tinte lila */
+  --ed-shadow-1: 0 1px 0 rgba(80, 60, 140, 0.04), 0 1px 2px rgba(40, 25, 90, 0.04);
+  --ed-shadow-2: 0 1px 0 rgba(80, 60, 140, 0.05), 0 4px 14px rgba(40, 25, 90, 0.06);
+  --ed-shadow-3: 0 1px 0 rgba(80, 60, 140, 0.06), 0 12px 32px rgba(40, 25, 90, 0.10);
+  --ed-shadow-glass: inset 0 1px 0 rgba(255,255,255,0.7), 0 6px 24px rgba(40, 25, 90, 0.08);
+
+  /* fuentes */
+  --ed-font-sans: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ed-font-mono: "Geist Mono", ui-monospace, "JetBrains Mono", "SF Mono", monospace;
+
+  /* overrides Bootstrap */
+  --bs-primary: var(--ed-lila-500);
+  --bs-primary-rgb: 130, 100, 220;
+  --bs-primary-text-emphasis: var(--ed-lila-700);
+  --bs-primary-bg-subtle: var(--ed-lila-100);
+  --bs-primary-border-subtle: var(--ed-lila-200);
+  --bs-link-color: var(--ed-lila-600);
+  --bs-link-color-rgb: 110, 80, 200;
+  --bs-link-hover-color: var(--ed-lila-700);
+  --bs-body-font-family: var(--ed-font-sans);
+  --bs-body-bg: var(--ed-paper);
+  --bs-body-color: var(--ed-ink);
+  --bs-border-color: var(--ed-line);
+  --bs-border-radius: 10px;
+  --bs-border-radius-sm: 6px;
+  --bs-border-radius-lg: 14px;
+  --bs-border-radius-xl: 20px;
+}
+
+/* dark mode opcional */
+[data-theme="dark"] {
+  --ed-paper:    oklch(0.16 0.02 285);
+  --ed-paper-2:  oklch(0.20 0.02 285);
+  --ed-paper-3:  oklch(0.24 0.025 285);
+  --ed-line:     oklch(0.30 0.02 285);
+  --ed-line-2:   oklch(0.38 0.025 285);
+  --ed-ink:      oklch(0.97 0.01 290);
+  --ed-ink-muted:oklch(0.70 0.012 290);
+  --bs-body-bg: var(--ed-paper);
+  --bs-body-color: var(--ed-ink);
+}
+
+body {
+  font-family: var(--ed-font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* botón primary lila refinado */
+.btn-primary {
+  --bs-btn-bg: var(--ed-lila-500);
+  --bs-btn-border-color: var(--ed-lila-500);
+  --bs-btn-hover-bg: var(--ed-lila-600);
+  --bs-btn-hover-border-color: var(--ed-lila-600);
+  --bs-btn-active-bg: var(--ed-lila-700);
+  --bs-btn-active-border-color: var(--ed-lila-700);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.18) inset, 0 6px 18px color-mix(in oklch, var(--ed-lila-500) 35%, transparent);
+}
+
+/* eyebrow: label pequeño mono uppercase */
+.ed-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 11px/1 var(--ed-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ed-ink-muted);
+  padding: 7px 11px;
+  border: 1px solid var(--ed-line);
+  border-radius: 999px;
+  background: #fff;
+}
+.ed-eyebrow .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--ed-lila-500);
+  box-shadow: 0 0 0 4px color-mix(in oklch, var(--ed-lila-500) 18%, transparent);
+}
+
+/* card glass para login y modales sobre gradiente */
+.ed-card-glass {
+  background: color-mix(in oklch, #fff 80%, transparent);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid color-mix(in oklch, var(--ed-line) 70%, transparent);
+  box-shadow: var(--ed-shadow-glass);
+}
+
+/* fondo con blobs atmosféricos para landing/login */
+.ed-bg-aurora {
+  position: relative;
+  overflow: hidden;
+}
+.ed-bg-aurora::before {
+  content: ""; position: absolute;
+  top: -200px; left: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle at center, color-mix(in oklch, var(--ed-lila-400) 35%, transparent), transparent 60%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+.ed-bg-aurora::after {
+  content: ""; position: absolute;
+  bottom: -300px; right: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle at center, color-mix(in oklch, var(--ed-cyan-400) 25%, transparent), transparent 60%);
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
+}
+.ed-bg-aurora > * { position: relative; z-index: 1; }
+
+/* status pills (libre/próximo/ocupado) */
+.ed-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 500 10.5px/1 var(--ed-font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid var(--ed-line);
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #fff;
+}
+.ed-status i { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+.ed-status--free  { color: oklch(0.42 0.12 155); }
+.ed-status--free  i { background: var(--ed-green-400); }
+.ed-status--soon  { color: oklch(0.50 0.12 80); }
+.ed-status--soon  i { background: var(--ed-amber-400); }
+.ed-status--busy  { color: oklch(0.45 0.16 18); }
+.ed-status--busy  i { background: var(--ed-rose-400); }
+
+/* glass navbar para landing */
+.ed-glass-nav {
+  background: color-mix(in oklch, #fff 70%, transparent);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid color-mix(in oklch, var(--ed-line) 70%, transparent);
+  box-shadow: var(--ed-shadow-glass);
+}
+
+/* tipografía utilitaria */
+.ed-mono { font-family: var(--ed-font-mono); }
+.ed-tabular { font-variant-numeric: tabular-nums; }
+
+/* heading con gradient em (para hero) */
+.ed-h1-gradient em {
+  font-style: normal;
+  background: linear-gradient(120deg, var(--ed-lila-500) 10%, var(--ed-violet-500) 60%, var(--ed-cyan-500) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

@@ -4,5 +4,7 @@ namespace edificio_digital.Service.Auth;
 
 public interface IAuthService
 {
-    Task<LoginResponseDto> LoginAsync(LoginRequestDto request);
+    Task<AuthLoginResultDto> LoginAsync(LoginRequestDto request);
+    Task<RefreshTokenResultDto> RefreshAsync(string refreshToken);
+    Task LogoutAsync(string refreshToken);
 }

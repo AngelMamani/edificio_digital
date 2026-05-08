@@ -1,4 +1,5 @@
 using edificio_digital.Entity.Model;
+using edificio_digital.Entity.Model.Seguridad;
 using edificio_digital.Entity.Model.Usuario;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +7,7 @@ namespace edificio_digital.Entity.Data;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
+    public DbSet<RefreshTokenEntity> RefreshTokens => Set<RefreshTokenEntity>();
     public DbSet<Sede> Sedes => Set<Sede>();
     public DbSet<Edificio> Edificios => Set<Edificio>();
     public DbSet<Piso> Pisos => Set<Piso>();
@@ -33,6 +35,21 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<RefreshTokenEntity>(entity =>
+        {
+            entity.ToTable("refresh_tokens", "seguridad");
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Id).HasColumnName("id");
+            entity.Property(x => x.UsuarioId).HasColumnName("usuario_id").IsRequired();
+            entity.Property(x => x.TokenHash).HasColumnName("token_hash").HasMaxLength(128).IsRequired();
+            entity.Property(x => x.ExpiresAt).HasColumnName("expires_at").IsRequired();
+            entity.Property(x => x.CreatedAt).HasColumnName("created_at").IsRequired();
+            entity.Property(x => x.RevokedAt).HasColumnName("revoked_at");
+            entity.Property(x => x.ReplacedByTokenId).HasColumnName("replaced_by_token_id");
+            entity.HasIndex(x => x.TokenHash).IsUnique();
+            entity.HasIndex(x => x.UsuarioId);
+        });
+
         modelBuilder.Entity<Sede>(entity =>
         {
             entity.ToTable("sedes", "estructura");

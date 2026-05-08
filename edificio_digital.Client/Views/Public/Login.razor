@@ -1,0 +1,91 @@
+@page "/login"
+
+<PageTitle>Iniciar sesión · Edificio digital</PageTitle>
+
+<div class="ed-bg-aurora py-5">
+    <div class="container" style="max-width:480px;">
+        <div class="text-center mb-4">
+            <span class="ed-eyebrow d-inline-flex"><i class="dot"></i> ACCESO</span>
+            <h1 class="h2 fw-medium mt-3" style="letter-spacing:-0.025em;">Iniciar sesión</h1>
+            <p class="text-secondary small mb-0">Ingresa con tu correo institucional</p>
+        </div>
+
+        <div class="card ed-card-glass">
+            <div class="card-body p-4">
+                <Alert Visible="@(!string.IsNullOrEmpty(message))" Variant="@variant">@message</Alert>
+
+                <EditForm Model="model" OnValidSubmit="HandleSubmit">
+                    <DataAnnotationsValidator />
+
+                    <div class="mb-3">
+                        <label class="form-label">Correo electrónico</label>
+                        <InputText class="form-control" @bind-Value="model.Email" autocomplete="username" />
+                        <ValidationMessage For="@(() => model.Email)" class="small text-danger" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Contraseña</label>
+                        <InputText type="password" class="form-control" @bind-Value="model.Contrasena" autocomplete="current-password" />
+                        <ValidationMessage For="@(() => model.Contrasena)" class="small text-danger" />
+                    </div>
+
+                    <button class="btn btn-primary w-100" type="submit" disabled="@busy">
+                        @(busy ? "Validando..." : "Entrar")
+                    </button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Inject] private HttpClient Http { get; set; } = default!;
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+    [Inject] private TokenStorage TokenStorage { get; set; } = default!;
+    [Inject] private JwtAuthenticationStateProvider AuthState { get; set; } = default!;
+
+    private LoginRequestDto model = new();
+    private string message = string.Empty;
+    private string variant = "danger";
+    private bool busy;
+
+    private async Task HandleSubmit()
+    {
+        busy = true;
+        message = string.Empty;
+        try
+        {
+            var resp = await Http.PostAsJsonAsync(AppConstants.ApiRoutes.Auth.Login, model);
+            if (!resp.IsSuccessStatusCode)
+            {
+                message = "Credenciales inválidas.";
+                return;
+            }
+
+            var data = await resp.Content.ReadFromJsonAsync<LoginResponseDto>();
+            if (data is { IsSuccess: true, AccessToken: not null })
+            {
+                await TokenStorage.SetAccessTokenAsync(data.AccessToken);
+                AuthState.NotifyUserChanged();
+                Nav.NavigateTo(LandingFor(data.Roles), forceLoad: false);
+            }
+            else
+            {
+                message = data?.Message ?? "No se pudo iniciar sesión.";
+            }
+        }
+        catch
+        {
+            message = "Error de conexión. Intenta de nuevo.";
+        }
+        finally
+        {
+            busy = false;
+        }
+    }
+
+    private static string LandingFor(List<string> roles) =>
+        roles.Contains(AppConstants.Roles.Admin) ? "/admin" :
+        roles.Contains(AppConstants.Roles.Solicitante) ? "/solicitante" :
+        "/";
+}

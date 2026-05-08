@@ -1,15 +1,13 @@
-using System.Security.Claims;
+using System.Text;
+using edificio_digital.Components;
 using edificio_digital.Entity.Auth;
 using edificio_digital.Entity.Data;
-using edificio_digital.Models.Auth;
 using edificio_digital.Models.Common;
 using edificio_digital.Models.Domain.Auth;
 using edificio_digital.Service.Auth;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,19 +16,32 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
 builder.Services.AddScoped<IAuthRepository, PostgreSqlAuthRepository>();
+builder.Services.AddScoped<IRefreshTokenRepository, PostgreSqlRefreshTokenRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
+
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
+var jwt = builder.Configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>()
+    ?? throw new InvalidOperationException("Falta configuración Jwt en appsettings.");
+
+if (string.IsNullOrWhiteSpace(jwt.Key) || jwt.Key.Length < 32)
+    throw new InvalidOperationException("Jwt:Key debe tener al menos 32 caracteres.");
 
 builder.Services
-    .AddAuthentication(AppConstants.Auth.CookieScheme)
-    .AddCookie(AppConstants.Auth.CookieScheme, options =>
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        options.Cookie.Name = AppConstants.Auth.CookieName;
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SameSite = SameSiteMode.Lax;
-        options.LoginPath = AppConstants.Pages.Login;
-        options.AccessDeniedPath = AppConstants.Pages.AccessDenied;
-        options.ExpireTimeSpan = TimeSpan.FromHours(8);
-        options.SlidingExpiration = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwt.Issuer,
+            ValidAudience = jwt.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
+            ClockSkew = TimeSpan.FromSeconds(30)
+        };
     });
 
 builder.Services.AddAuthorization(options =>
@@ -39,16 +50,10 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy(AppConstants.Policies.SolicitanteOnly, p => p.RequireRole(AppConstants.Roles.Solicitante));
 });
 
-builder.Services.AddRazorPages(options =>
-{
-    options.Conventions.AuthorizeFolder("/Admin", AppConstants.Policies.AdminOnly);
-    options.Conventions.AuthorizeFolder("/Solicitante", AppConstants.Policies.SolicitanteOnly);
-    options.Conventions.AllowAnonymousToPage(AppConstants.Pages.Login);
-    options.Conventions.AllowAnonymousToPage(AppConstants.Pages.AccessDenied);
-    options.Conventions.AllowAnonymousToPage(AppConstants.Pages.Home);
-    options.Conventions.AllowAnonymousToPage("/Privacy");
-    options.Conventions.AllowAnonymousToPage("/Error");
-});
+builder.Services.AddControllers();
+
+builder.Services.AddRazorComponents()
+    .AddInteractiveWebAssemblyComponents();
 
 var app = builder.Build();
 
@@ -59,24 +64,41 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseRouting();
+
+app.Use(async (context, next) =>
+{
+    var headers = context.Response.Headers;
+    headers["X-Content-Type-Options"] = "nosniff";
+    headers["X-Frame-Options"] = "DENY";
+    headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+    headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), interest-cohort=()";
+    headers["Cross-Origin-Opener-Policy"] = "same-origin";
+    headers["Cross-Origin-Resource-Policy"] = "same-origin";
+    headers["Content-Security-Policy"] =
+        "default-src 'self'; " +
+        "script-src 'self' 'wasm-unsafe-eval' https://cdn.jsdelivr.net; " +
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; " +
+        "font-src 'self' https://fonts.gstatic.com; " +
+        "img-src 'self' data: blob:; " +
+        "connect-src 'self'; " +
+        "frame-ancestors 'none'; " +
+        "base-uri 'self'; " +
+        "form-action 'self'; " +
+        "object-src 'none';";
+    await next();
+});
+
+app.UseStaticFiles();
+app.UseAntiforgery();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapPost(AppConstants.ApiRoutes.Auth.Login, async (LoginRequestDto request, IAuthService authService) =>
-{
-    var response = await authService.LoginAsync(request);
-    return response.IsSuccess ? Results.Ok(response) : Results.Unauthorized();
-});
-
-app.MapPost(AppConstants.ApiRoutes.Auth.Logout, async (HttpContext ctx) =>
-{
-    await ctx.SignOutAsync(AppConstants.Auth.CookieScheme);
-    return Results.Ok();
-}).RequireAuthorization();
-
 app.MapStaticAssets();
-app.MapRazorPages().WithStaticAssets();
+app.MapControllers();
+
+app.MapRazorComponents<App>()
+    .AddInteractiveWebAssemblyRenderMode()
+    .AddAdditionalAssemblies(typeof(edificio_digital.Client._Imports).Assembly);
 
 using (var scope = app.Services.CreateScope())
 {

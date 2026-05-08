@@ -1,0 +1,56 @@
+@inherits LayoutComponentBase
+
+<div class="layout-solicitante d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-primary-subtle border-bottom">
+            <div class="container">
+                <a class="navbar-brand fw-semibold text-primary" href="/solicitante">Mis solicitudes</a>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><NavLink class="nav-link" href="/solicitante" Match="NavLinkMatch.All">Inicio</NavLink></li>
+                    <li class="nav-item"><NavLink class="nav-link" href="/solicitante/nueva-reserva">Nueva reserva</NavLink></li>
+                </ul>
+                <div class="d-flex align-items-center small">
+                    <AuthorizeView>
+                        <Authorized>
+                            <span class="me-3 text-secondary">@context.User.Identity?.Name</span>
+                        </Authorized>
+                    </AuthorizeView>
+                    <button class="btn btn-outline-primary btn-sm" @onclick="LogoutAsync" disabled="@busy">
+                        @(busy ? "Saliendo..." : "Cerrar sesión")
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container py-4 flex-grow-1">
+        @Body
+    </main>
+
+    <footer class="border-top text-secondary py-3 mt-auto">
+        <div class="container small">© 2026 Edificio digital · Portal de solicitantes</div>
+    </footer>
+</div>
+
+@code {
+    [Inject] private HttpClient Http { get; set; } = default!;
+    [Inject] private TokenStorage TokenStorage { get; set; } = default!;
+    [Inject] private JwtAuthenticationStateProvider AuthState { get; set; } = default!;
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+
+    private bool busy;
+
+    private async Task LogoutAsync()
+    {
+        busy = true;
+        try { await Http.PostAsync(AppConstants.ApiRoutes.Auth.Logout, null); }
+        catch { }
+        finally
+        {
+            await TokenStorage.RemoveAccessTokenAsync();
+            AuthState.NotifySignedOut();
+            busy = false;
+            Nav.NavigateTo("/login", forceLoad: false);
+        }
+    }
+}

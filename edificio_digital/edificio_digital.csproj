@@ -11,9 +11,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.7" />
     <ProjectReference Include="..\edificio_digital.Entity\edificio_digital.Entity.csproj" />
     <ProjectReference Include="..\edificio_digital.Service\edificio_digital.Service.csproj" />
     <ProjectReference Include="..\edificio_digital.Models\edificio_digital.Models.csproj" />
+    <ProjectReference Include="..\edificio_digital.Client\edificio_digital.Client.csproj" />
   </ItemGroup>
 
 </Project>

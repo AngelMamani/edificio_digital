@@ -20,9 +20,13 @@
 
 ```
 Auth/
-  IAuthService.cs
-  AuthService.cs        valida credenciales, calcula rol primario, decide redirección
+  IAuthService.cs           Login · Refresh · Logout
+  AuthService.cs            valida credenciales, genera tokens, rota refresh, revoca
+  IJwtTokenService.cs       contrato de generación de JWT (HS256) y refresh value
+  JwtTokenService.cs        impl HS256 con SymmetricSecurityKey + SHA-256 para hash de refresh
 ```
+
+> Nota arquitectónica: `JwtTokenService` está en Service (no en Entity) porque la generación/firma de tokens es una **utilidad de aplicación**, no persistencia. Service depende solo de `Models` y trae los paquetes `System.IdentityModel.Tokens.Jwt` + `Microsoft.Extensions.Options.ConfigurationExtensions`.
 
 ## Cómo extender
 
@@ -85,13 +89,13 @@ public class ReservaService(IReservaRepository reservas) : IReservaService
 }
 ```
 
-**3. Registra en `Program.cs` (proyecto Web):**
+**3. Registra en `Program.cs` (proyecto host `edificio_digital`):**
 
 ```csharp
 builder.Services.AddScoped<IReservaService, ReservaService>();
 ```
 
-A partir de ahí cualquier `PageModel` o endpoint mínimo puede inyectar `IReservaService`. La capa Application no conoce HTTP — puede ser invocada igual desde una página Razor (in-process) que desde un endpoint API.
+A partir de ahí cualquier **controlador HTTP** (`Controllers/<Rol>/`) puede inyectarlo por constructor primario. La capa Application no conoce HTTP — puede ser invocada igual desde un controlador, desde un job en segundo plano o desde tests, sin diferencia.
 
 ### Patrones útiles
 
@@ -103,5 +107,6 @@ A partir de ahí cualquier `PageModel` o endpoint mínimo puede inyectar `IReser
 ## Qué evitar
 
 - No instancies `AppDbContext`, no uses `DbContextOptions`. Solo Infrastructure conoce EF.
-- No leas `HttpContext`, no firmes cookies, no devuelvas `IActionResult`. Eso es trabajo de la capa Web.
+- No leas `HttpContext`, no firmes cookies, no devuelvas `IActionResult`. Eso es trabajo del host (`edificio_digital`/Controllers).
 - No referencies `edificio_digital.Entity`. Si te ves tentado a hacerlo, te falta una interfaz en `Models`.
+- No referencies `edificio_digital.Client`. La UI no debe filtrarse a Application bajo ninguna circunstancia.

@@ -24,12 +24,17 @@ Data/
   AppDbContextFactory.cs   factory para 'dotnet ef' en design-time
   DbSeeder.cs              Migrate + upsert de roles + admin/admin
 Auth/
-  PostgreSqlAuthRepository.cs   implementa IAuthRepository
+  BcryptPasswordHasher.cs              implementa IPasswordHasher
+  PostgreSqlAuthRepository.cs          implementa IAuthRepository
+  PostgreSqlRefreshTokenRepository.cs  implementa IRefreshTokenRepository
 model/
   usuario/  estructura/  recursos/  seguridad/  reservas/  auditoria/
+  seguridad/refresh-token.cs           tabla seguridad.refresh_tokens (JWT refresh)
 Migrations/
-  ...                      generadas por EF Core
+  ...                                  generadas por EF Core
 ```
+
+La tabla `seguridad.refresh_tokens` guarda el **hash SHA-256** del refresh token (no el valor en claro), con índice único por hash y por usuario. Permite logout server-side real (`RevokedAt`) y rotación con cadena de reemplazo (`ReplacedByTokenId`).
 
 ## Cómo extender
 
