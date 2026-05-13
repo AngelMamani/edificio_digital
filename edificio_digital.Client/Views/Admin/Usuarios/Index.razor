@@ -1,0 +1,57 @@
+﻿@page "/admin/usuarios-list"
+@using edificio_digital.Models.Models.Usuarios
+@inject HttpClient Http
+
+<PageTitle>usuarios</PageTitle>
+
+<PageHeader Title="Panel administrativo"
+            Eyebrow="ADMIN"
+            Subtitle="Bienvenido. Gestiona usuarios y reservas." />
+
+<div class="row g-3">
+
+    @if (usuarios is null)
+    {
+        <p>Cargando...</p>
+    }
+    else if (!usuarios.Any())
+    {
+        <p>No hay usuarios.</p>
+    }
+    else
+    {
+        @foreach (var usuario in usuarios)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title fw-medium">
+                            Usuario #@usuario.Id
+                        </h5>
+                        <p class="card-text">
+                            <strong>Nombre:</strong> @usuario.NombreCompleto<br />
+                            <strong>Email:</strong> @usuario.Email<br />
+                        </p>
+
+                        <p class="card-text text-secondary small">
+                            Usuario registrado en el sistema
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+</div>
+
+@code {
+
+    private List<UserDto> usuarios = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        usuarios = await Http.GetFromJsonAsync<List<UserDto>>(
+            "api/admin/users/list"
+        ) ?? new();
+    }
+}
